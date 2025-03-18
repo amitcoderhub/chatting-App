@@ -5,9 +5,9 @@ import EmojiPicker from "emoji-picker-react";
 import MessageList from "./MessageList";
 import InputBox from "./InputBox";
 
-// const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3001");
 // In Chat.jsx or similar file
-const socket = io("https://chatting-app-i4g4.onrender.com");
+// const socket = io("https://chatting-app-i4g4.onrender.com");
 
 const Chat = ({ username }) => {
   const [messages, setMessages] = useState([]);
