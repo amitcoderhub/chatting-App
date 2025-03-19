@@ -11,6 +11,7 @@ const socket = io("https://chatting-app-d995.onrender.com", {
   withCredentials: true, // ✅ Important for CORS
 });
 
+
 const Chat = ({ username }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState(""); // Track message input
@@ -26,10 +27,7 @@ const Chat = ({ username }) => {
 
     // Listen for incoming messages
     socket.on("receive_message", (message) => {
-      // Check if the message is not already in the state
-      if (!messages.some((msg) => msg.timestamp === message.timestamp)) {
-        setMessages((prev) => [...prev, message]);
-      }
+      setMessages((prev) => [...prev, message]);
     });
 
     // Listen for user updates
@@ -54,7 +52,7 @@ const Chat = ({ username }) => {
       socket.off("user_typing");
       socket.off("user_stop_typing");
     };
-  }, [username, messages]);
+  }, [username]);
 
   // Check if the current user is online
   const isUserOnline = Object.values(users).some(
@@ -69,7 +67,7 @@ const Chat = ({ username }) => {
   // Send message
   const sendMessage = () => {
     if (message.trim()) {
-      const data = { username, message, timestamp: new Date() };
+      const data = { username, message, socketId: socket.id };
       socket.emit("send_message", data);
       setMessage(""); // Clear the input box
     }
