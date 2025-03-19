@@ -4,13 +4,13 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const app = express();
-app.use(cors({ origin: "https://your-frontend.onrender.com", credentials: true }));
+app.use(cors({ origin: "https://chatting-app-1-f3xo.onrender.com", credentials: true }));
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://your-frontend.onrender.com", // Replace with your actual frontend Render URL
+    origin: "https://chatting-app-1-f3xo.onrender.com", // Replace with your actual frontend Render URL
     methods: ["GET", "POST"],
     credentials: true,
   },
