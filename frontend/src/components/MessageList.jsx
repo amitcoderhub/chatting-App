@@ -15,7 +15,7 @@ const MessageList = ({ messages, username, users }) => {
   return (
     <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
       {messages.map((msg, index) => {
-        const isSenderActive = users[msg.socketId]?.active; // Check if the sender is active
+        const isSenderActive = users[msg.socketId]?.active;
         return (
           <div
             key={index}
@@ -23,14 +23,14 @@ const MessageList = ({ messages, username, users }) => {
               msg.username === username ? "items-end" : "items-start"
             }`}
           >
-            {/* Online status for active users */}
+            {}
             {isSenderActive && msg.username !== username && (
               <span className="text-xs text-green-500 mb-1">
                 {msg.username} <span className="text-green-500">• Online</span>
               </span>
             )}
 
-            {/* Message bubble */}
+            {}
             <div
               className={`p-3 rounded-2xl max-w-[80%] relative ${
                 msg.username === username
@@ -79,3 +79,5 @@ const MessageList = ({ messages, username, users }) => {
 };
 
 export default MessageList;
+
+
