@@ -10,11 +10,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://chatting-app-1-f3xo.onrender.com", // Replace with your actual frontend Render URL
+    origin: ["https://chatting-app-1-f3xo.onrender.com"], // ✅ Correct frontend URL
     methods: ["GET", "POST"],
-    credentials: true,
+    allowedHeaders: ["Content-Type"],
+    credentials: true, // ✅ Allow credentials
   },
 });
+
 
 const users = {}; // Track active users
 

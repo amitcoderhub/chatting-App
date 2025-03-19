@@ -7,11 +7,10 @@ import InputBox from "./InputBox";
 
 // Updated to use deployed backend
 const socket = io("https://chatting-app-d995.onrender.com", {
-  withCredentials: true,
-  extraHeaders: {
-    "Access-Control-Allow-Origin": "*",
-  },
+  transports: ["websocket"],
+  withCredentials: true, // ✅ Important for CORS
 });
+
 
 const Chat = ({ username }) => {
   const [messages, setMessages] = useState([]);
