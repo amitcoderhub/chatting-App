@@ -17,35 +17,52 @@ const io = new Server(server, {
   },
 });
 
-
 const users = {}; // Track active users
+const messages = []; // Store chat messages (consider using a database)
 
+// ✅ Handle new user connections
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  // Listen for new users
+  // ✅ Register user
   socket.on("register_user", (username) => {
     users[socket.id] = { username, lastSeen: new Date(), active: true };
     io.emit("update_users", users); // Broadcast updated user list
   });
 
-  // Listen for chat messages
+  // ✅ Send chat message (Public)
   socket.on("send_message", (data) => {
     const message = { ...data, timestamp: new Date(), read: false };
-    io.emit("receive_message", message); // Broadcast the message to all clients
+    messages.push(message); // Store message (consider using a database)
+    io.emit("receive_message", message); // Broadcast message
   });
 
-  // Listen for typing events
+  // ✅ Send private message
+  socket.on("send_private_message", ({ sender, receiverId, content }) => {
+    const message = { sender, content, timestamp: new Date(), read: false };
+    if (users[receiverId]) {
+      io.to(receiverId).emit("receive_private_message", message);
+    }
+  });
+
+  // ✅ Message seen feature
+  socket.on("message_seen", (messageId) => {
+    messages.forEach((msg) => {
+      if (msg.id === messageId) msg.read = true;
+    });
+    io.emit("update_message_status", { messageId, read: true });
+  });
+
+  // ✅ Typing indicators
   socket.on("typing", (username) => {
-    socket.broadcast.emit("user_typing", username); // Broadcast typing event to other users
+    socket.broadcast.emit("user_typing", username);
   });
 
-  // Listen for stop typing events
   socket.on("stop_typing", () => {
-    socket.broadcast.emit("user_stop_typing"); // Broadcast stop typing event
+    socket.broadcast.emit("user_stop_typing");
   });
 
-  // Handle disconnection
+  // ✅ Handle disconnection
   socket.on("disconnect", () => {
     if (users[socket.id]) {
       users[socket.id].active = false;
@@ -56,6 +73,7 @@ io.on("connection", (socket) => {
   });
 });
 
+// ✅ Start the server
 server.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
