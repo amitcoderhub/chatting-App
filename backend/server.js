@@ -4,19 +4,15 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
-
-// Add this route to show a message in the browser
-app.get("/", (req, res) => {
-  res.send("Socket.io server is running! 🚀");
-});
+app.use(cors({ origin: "https://your-frontend.onrender.com", credentials: true }));
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://your-frontend.onrender.com", // Change this to your frontend URL
+    origin: "https://your-frontend.onrender.com", // Replace with your actual frontend Render URL
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -28,23 +24,23 @@ io.on("connection", (socket) => {
   // Listen for new users
   socket.on("register_user", (username) => {
     users[socket.id] = { username, lastSeen: new Date(), active: true };
-    io.emit("update_users", users);
+    io.emit("update_users", users); // Broadcast updated user list
   });
 
   // Listen for chat messages
   socket.on("send_message", (data) => {
     const message = { ...data, timestamp: new Date(), read: false };
-    io.emit("receive_message", message);
+    io.emit("receive_message", message); // Broadcast the message to all clients
   });
 
   // Listen for typing events
   socket.on("typing", (username) => {
-    socket.broadcast.emit("user_typing", username);
+    socket.broadcast.emit("user_typing", username); // Broadcast typing event to other users
   });
 
   // Listen for stop typing events
   socket.on("stop_typing", () => {
-    socket.broadcast.emit("user_stop_typing");
+    socket.broadcast.emit("user_stop_typing"); // Broadcast stop typing event
   });
 
   // Handle disconnection
@@ -52,7 +48,7 @@ io.on("connection", (socket) => {
     if (users[socket.id]) {
       users[socket.id].active = false;
       users[socket.id].lastSeen = new Date();
-      io.emit("update_users", users);
+      io.emit("update_users", users); // Broadcast updated user list
     }
     console.log("User disconnected:", socket.id);
   });
