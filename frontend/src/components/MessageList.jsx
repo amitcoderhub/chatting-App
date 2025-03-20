@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { FaCheckDouble } from "react-icons/fa";
 import { motion } from "framer-motion";
+// import { motion } from "framer-motion"; // ✅ Correct
+
 
 const MessageList = ({ messages, username, users }) => {
   const messagesEndRef = useRef(null);
