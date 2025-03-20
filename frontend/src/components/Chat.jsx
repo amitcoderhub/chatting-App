@@ -5,9 +5,11 @@ import EmojiPicker from "emoji-picker-react";
 import MessageList from "./MessageList";
 import InputBox from "./InputBox";
 
-const socket = io("http://localhost:3001");
-// In Chat.jsx or similar file
-// const socket = io("https://chatting-app-i4g4.onrender.com");
+// Updated to use deployed backend
+const socket = io("https://chatting-app-d995.onrender.com", {
+  transports: ["websocket"],
+  withCredentials: true, // ✅ Important for CORS
+});
 
 const Chat = ({ username }) => {
   const [messages, setMessages] = useState([]);
@@ -103,7 +105,7 @@ const Chat = ({ username }) => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-4">
+    <div className="flex items-center  justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-4">
       {/* Mobile-like chat container */}
       <div className="w-full max-w-sm h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
@@ -118,7 +120,6 @@ const Chat = ({ username }) => {
             </p>
           </div>
           <div className="flex items-center gap-2">
-           
             <button
               onClick={() => alert("Video call functionality coming soon!")}
               className="p-2 bg-white text-blue-500 rounded-lg hover:bg-gray-100 transition-colors"

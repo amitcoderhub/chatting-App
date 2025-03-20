@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 
 const UserList = ({ users }) => {
-  const [selectedUser, setSelectedUser] = useState(null); // Track selected user
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleUserClick = (user) => {
-    setSelectedUser(user); // Set the selected user
+    setSelectedUser(user);
   };
 
   return (
-    <div className="w-64 bg-white border-r p-4">
-      <h2 className="font-bold mb-4 text-gray-800">Active Users</h2>
+    <div className="w-64 bg-white dark:bg-gray-700 border-r p-4">
+      <h2 className="font-bold mb-4 text-gray-800 dark:text-gray-200">Active Users</h2>
       {Object.values(users).map((user, index) => (
         <div
           key={index}
-          className="mb-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
+          className="mb-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors"
           onClick={() => handleUserClick(user)}
         >
           <div className="flex items-center justify-between">
-            <span className="font-bold text-gray-700">{user.username}</span>
+            <span className="font-bold text-gray-700 dark:text-gray-200">{user.username}</span>
             {user.active ? (
               <span className="text-green-500 text-sm">• Online</span>
             ) : (
@@ -32,20 +32,18 @@ const UserList = ({ users }) => {
       {/* Modal to display user information */}
       {selectedUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 sm:w-96">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">
+          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg w-11/12 sm:w-96">
+            <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">
               User Information
             </h2>
-            <p className="text-gray-700">
+            <p className="text-gray-700 dark:text-gray-200">
               <strong>Username:</strong> {selectedUser.username}
             </p>
-            <p className="text-gray-700">
-              <strong>Status:</strong>{" "}
-              {selectedUser.active ? "Online" : "Offline"}
+            <p className="text-gray-700 dark:text-gray-200">
+              <strong>Status:</strong> {selectedUser.active ? "Online" : "Offline"}
             </p>
-            <p className="text-gray-700">
-              <strong>Last Seen:</strong>{" "}
-              {new Date(selectedUser.lastSeen).toLocaleTimeString()}
+            <p className="text-gray-700 dark:text-gray-200">
+              <strong>Last Seen:</strong> {new Date(selectedUser.lastSeen).toLocaleTimeString()}
             </p>
             <button
               onClick={() => setSelectedUser(null)}
